@@ -1,0 +1,483 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "api.vacation",
+    "description": "test vacation api",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "HTTP"
+    }
+  ],
+  "tags":[
+    {
+      "name": "Auth",
+      "description": "Api for user`s sign in and sign up"
+    },
+    {
+      "name": "User",
+      "description": "Api for user`s updating and showing info"
+    },
+    {
+      "name": "Vacations",
+      "description": "Api for vacation`s CRUD"
+    },
+    {
+      "name": "Vacation Balance",
+      "description": "Api for showing balance, this one updates automatically"
+    }
+  ],
+  "components": {
+    "securitySchemes":{
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "definitions" : {
+    "UserSignUp": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type" : "string"
+        },
+        "lastName": {
+          "type" : "string"
+        },
+        "email": {
+          "type" : "string"
+        },
+        "password": {
+          "type" : "string",
+          "min": 6
+        },
+        "passwordConfirmation": {
+          "type" : "string",
+          "min": 6
+        }
+      }
+    },
+    "UserSignIn": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type" : "string"
+        },
+        "password": {
+          "type" : "string"
+        }
+      }
+    },
+    "Vacation":{
+      "type":"object",
+      "properties": {
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "VacationBalance": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "paths":{
+    "/auth/sign_up": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags":[
+          "Auth"
+        ],
+        "summary":"Sign up a new user",
+        "requestBody": {
+          "description": "User Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/UserSignUp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/auth/sign_in": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags":[
+          "Auth"
+        ],
+        "summary":"Sign in an existing user",
+        "requestBody": {
+          "description": "User Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/UserSignIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearerAuth":[]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to show info",
+            "type": "string"
+          }
+        ],
+        "tags":[
+          "User"
+        ],
+        "summary": "Get user info with given ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          },
+          "401": {
+            "description": "Failed. Unauthorized."
+          }
+        }
+      }
+    },
+    "/vacations/users/{userId}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearerAuth":[]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to show vacations",
+            "type": "string"
+          }
+        ],
+        "tags":[
+          "Vacations"
+        ],
+        "summary": "Get user info with given ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          },
+          "401": {
+            "description": "Failed. Unauthorized."
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearerAuth":[]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to show vacations",
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Vacation Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Vacation"
+              }
+            }
+          }
+        },
+        "tags":[
+          "Vacations"
+        ],
+        "summary": "Get user info with given ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          },
+          "401": {
+            "description": "Failed. Unauthorized."
+          }
+        }
+      }
+    },
+    "/vacations/{id}/users/{userId}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearerAuth":[]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the vacation",
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user",
+            "type": "string"
+          }
+        ],
+        "tags":[
+          "Vacations"
+        ],
+        "summary": "Get user info with given ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          },
+          "401": {
+            "description": "Failed. Unauthorized."
+          }
+        }
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearerAuth":[]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the vacation",
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user",
+            "type": "string"
+          }
+        ],
+        "tags":[
+          "Vacations"
+        ],
+        "requestBody": {
+          "description": "Vacation Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Vacation"
+              }
+            }
+          }
+        },
+        "summary": "Get user info with given ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          },
+          "401": {
+            "description": "Failed. Unauthorized."
+          }
+        }
+      },
+      "delete": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearerAuth":[]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the vacation to show vacation",
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user ",
+            "type": "string"
+          }
+        ],
+        "tags":[
+          "Vacations"
+        ],
+        "summary": "Get user info with given ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          },
+          "401": {
+            "description": "Failed. Unauthorized."
+          }
+        }
+      }
+    },
+    "/vacation_balances/users/{userId}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearerAuth":[]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user",
+            "type": "string"
+          }
+        ],
+        "tags":[
+          "Vacation Balance"
+        ],
+        "summary": "Get user info with given ID",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          },
+          "401": {
+            "description": "Failed. Unauthorized."
+          }
+        }
+      }
+    }
+  }
+}
