@@ -10,7 +10,7 @@ export class PassportLocalService {
         this.credentials = this.userCredentials;
         this.usersRepository = new UsersRepository();
     }
-    public  handler = async(email: string, password: string, done: any): Promise<any>=> {
+    public  handler = async (email: string, password: string, done: any): Promise<any> => {
         try {
             const user: IUserModel | null = await this.usersRepository.findByEmail(email);
             // tslint:disable-next-line:no-unused-expression

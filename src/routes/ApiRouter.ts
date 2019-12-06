@@ -6,6 +6,7 @@ import { AbstractRouter } from "./AbstractRouter";
 import { authApi } from "./AuthRouter";
 import { IApiRouter } from "./interfaces/ApiRouter";
 import { userApi } from "./UserRouter";
+import {vacationApi} from "./VacationRouter";
 export class ApiRouter extends AbstractRouter {
     constructor(public router: Router, private routes: IApiRouter[]) {
         super(router);
@@ -29,6 +30,7 @@ export class ApiRouter extends AbstractRouter {
 const apiRoutes: IApiRouter[] = [
     { url: "/auth", router: authApi },
     { url: "/users", router: userApi },
+    { url: "/vacations", router: vacationApi },
     ];
 
 export const apiRouter = new ApiRouter(Router(), apiRoutes);

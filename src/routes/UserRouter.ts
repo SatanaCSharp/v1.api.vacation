@@ -2,13 +2,14 @@ import { Router } from "express";
 import { IUsersController } from "../controllers/interfaces/IUsersController";
 import { UsersController } from "../controllers/UsersController";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware";
+import {IAuthMiddleware} from "../middlewares/interfaces/IAuthMiddleware";
 import { AbstractRouter } from "./AbstractRouter";
 
 class UserRouter extends AbstractRouter {
 
     constructor(
         public router: Router,
-        private authMiddleware: AuthMiddleware,
+        private authMiddleware: IAuthMiddleware,
         private usersController: IUsersController,
     ) {
         super(router);

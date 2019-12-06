@@ -27,10 +27,6 @@
     {
       "name": "Vacations",
       "description": "Api for vacation`s CRUD"
-    },
-    {
-      "name": "Vacation Balance",
-      "description": "Api for showing balance, this one updates automatically"
     }
   ],
   "components": {
@@ -425,45 +421,6 @@
         ],
         "tags":[
           "Vacations"
-        ],
-        "summary": "Get user info with given ID",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Failed. Bad request."
-          },
-          "401": {
-            "description": "Failed. Unauthorized."
-          }
-        }
-      }
-    },
-    "/vacation_balances/users/{userId}": {
-      "get": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "security": [
-          {
-            "bearerAuth":[]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "description": "ID of the user",
-            "type": "string"
-          }
-        ],
-        "tags":[
-          "Vacation Balance"
         ],
         "summary": "Get user info with given ID",
         "responses": {

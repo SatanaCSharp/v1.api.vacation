@@ -9,14 +9,17 @@ import {UsersRepository} from "../../repositories/UsersRepository";
 import { IUserModel } from "../../schemas/interfaces/IUserModel";
 import {jwtService} from "../../util/JwtService";
 import { IAuthService } from "../interfaces/IAuthService";
-
+import {IVacationBalancesService} from "../interfaces/IVacationBalancesService";
+import {VacationBalanceService} from "../services.vacations/VacationBalancesService";
 
 export class AuthLocalService implements IAuthService {
     private usersRepository: IUserRepository;
     private userMapper: IMapRequestToEntity<Request, IUserEntity>;
+    private vacationBalanceServices: IVacationBalancesService;
     constructor() {
         this.userMapper = new UserMapper(new UserEntity());
         this.usersRepository = new UsersRepository();
+        this.vacationBalanceServices = new VacationBalanceService();
     }
     public signIn(req: Request, res: Response, next: NextFunction): Promise<any> {
         return passport.authenticate("local", { session: false }, (err, user) => {
@@ -33,6 +36,7 @@ export class AuthLocalService implements IAuthService {
         try {
             const userEntity: IUserEntity = this.userMapper.mapRequestToEntity(req);
             const user: IUserModel = await this.usersRepository.store(userEntity);
+            await this.vacationBalanceServices.storeInitialBalance(user._id);
             return res.json({ user: await jwtService.authJSON(user) });
         } catch (err) {
             return res.sendStatus(500);
