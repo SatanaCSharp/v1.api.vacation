@@ -6,7 +6,8 @@ import { AbstractRouter } from "./AbstractRouter";
 import { authApi } from "./AuthRouter";
 import { IApiRouter } from "./interfaces/ApiRouter";
 import { userApi } from "./UserRouter";
-import {vacationApi} from "./VacationRouter";
+import { vacationApi } from "./VacationRouter";
+import { config } from "../config";
 export class ApiRouter extends AbstractRouter {
     constructor(public router: Router, private routes: IApiRouter[]) {
         super(router);
@@ -18,7 +19,7 @@ export class ApiRouter extends AbstractRouter {
 
     private setupApiRoutes(routes: IApiRouter[]) {
         routes.forEach((route) => {
-            this.addApiRouter(route.url, route.router);
+            this.addApiRouter(`/${config.api.version}${route.url}`, route.router);
         });
         this.router.use("/api_docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
         this.router.get("/", RoutesMiddleware.rootRedirect);

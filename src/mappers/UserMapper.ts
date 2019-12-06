@@ -43,8 +43,8 @@ export class UserMapper implements IMapRequestToEntity<Request, IUserEntity> {
             .toString("hex");
     }
     private setHash(password: string): void {
-        this.setSalt();
         if (password) {
+            this.setSalt();
             if (this.userEntity.salt && password) {
                 this.userEntity.hash = crypto
                     .pbkdf2Sync(password, this.userEntity.salt, 1000, 512, "sha512")

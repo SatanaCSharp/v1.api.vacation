@@ -2,6 +2,9 @@ import * as dotEnv from "dotenv";
 dotEnv.config();
 
 export const config = {
+    api: {
+      version: "v1",
+    },
     auth: {
         tokenLifetime: 7200000,
     },
