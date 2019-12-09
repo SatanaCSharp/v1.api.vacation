@@ -47,7 +47,7 @@ describe("Vacation Api testing", () => {
         chai.request(server)
         .post(`/vacations/users/${userSignedIn._id}`)
         .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
+        .set("Authorization", `Bearer ${userSignedIn.token}`)
         .send({
             startDate : "2019-12-17",
             endDate: "2019-12-19",
@@ -59,40 +59,12 @@ describe("Vacation Api testing", () => {
             vacation._id = res.body[0]._id;
         });
     });
-    it("GET /users/:id after creation of a vacation", (done) => {
-        chai.request(server)
-        .get(`/users/${userSignedIn._id}`)
-        .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.user.should.be.a("object");
-            res.body.user.should.have.property("_id");
-            res.body.user.should.have.property("email").eql(userSignedIn.email);
-            res.body.should.have.property("vacationBalance");
-            res.body.vacationBalance.should.have.property("amount").eql(19);
-        });
-    });
-    it("GET /vacations/:id/users/:userId", () => {
-        chai.request(server)
-        .get(`/vacations/${vacation._id}/users/${userSignedIn._id}`)
-        .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a("object");
-            res.body[0].should.have.property("_id");
-            res.body[0].should.have.property("startDate");
-            res.body[0].should.have.property("endDate");
-            res.body[0].should.have.property("description");
-        });
-    });
 
     it("PUT /vacations/:id/users/:userId", () => {
         chai.request(server)
         .put(`/vacations/${vacation._id}/users/${userSignedIn._id}`)
         .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
+        .set("Authorization", `Bearer ${userSignedIn.token}`)
         .send({
             startDate: "2019-12-17",
             endDate: "2019-12-20",
@@ -106,45 +78,15 @@ describe("Vacation Api testing", () => {
             res.body[0].should.have.property("description");
         });
     });
-
-    it("GET /users/:id  after updating of a vacation", (done) => {
-        chai.request(server)
-        .get(`/users/${userSignedIn._id}`)
-        .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.user.should.be.a("object");
-            res.body.user.should.have.property("_id");
-            res.body.user.should.have.property("email").eql(userSignedIn.email);
-            res.body.should.have.property("vacationBalance");
-            res.body.vacationBalance.should.have.property("amount").eql(18);
-        });
-    });
-
     it("DELETE /vacations/users/:id", () => {
         chai.request(server)
         .delete(`/vacations/${vacation._id}/users/${userSignedIn._id}`)
         .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
+        .set("Authorization", `Bearer ${userSignedIn.token}`)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a("array");
             res.body.length.should.eql(0);
-        });
-    });
-    it("GET /users/:id  after deleting of a vacation", (done) => {
-        chai.request(server)
-        .get(`/users/${userSignedIn._id}`)
-        .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.body.user.should.be.a("object");
-            res.body.user.should.have.property("_id");
-            res.body.user.should.have.property("email").eql(userSignedIn.email);
-            res.body.should.have.property("vacationBalance");
-            res.body.vacationBalance.should.have.property("amount").eql(21);
         });
     });
 

@@ -44,7 +44,7 @@ describe("User Api testing", () => {
         chai.request(server)
         .get(`/users/${userSignedIn._id}`)
         .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
+        .set("Authorization", `Bearer ${userSignedIn.token}`)
         .end((err, res) => {
             res.should.have.status(200);
             res.body.user.should.be.a("object");
@@ -52,13 +52,14 @@ describe("User Api testing", () => {
             res.body.user.should.have.property("email").eql(userSignedIn.email);
             res.body.should.have.property("vacationBalance");
             res.body.vacationBalance.should.have.property("amount");
+            done();
         });
     });
     it("Update user data using userId", (done) => {
         chai.request(server)
         .put(`/users/${userSignedIn._id}`)
         .set("Content-Type", "application/json")
-        .set("Authorization", userSignedIn.token)
+        .set("Authorization", `Bearer ${userSignedIn.token}`)
         .send({
             firstName: "Kira",
             lastName: "Norman",
@@ -76,6 +77,7 @@ describe("User Api testing", () => {
             res.body.vacationBalance.should.have.property("amount");
             res.body.user.should.have.property("hiredDate");
             res.body.user.hiredDate.match(/2019-12-01/gi).should.not.eql(null);
+            done();
         });
     });
 
