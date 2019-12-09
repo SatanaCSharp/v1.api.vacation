@@ -3,7 +3,9 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import faker from "faker";
 chai.use(chaiHttp);
+
 const should = chai.should();
+
 const server = "http://localhost:5000/v1";
 const user = {
     firstName: faker.name.firstName(),

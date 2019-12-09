@@ -6,12 +6,12 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "test": "mocha src/tests/*.ts --reporter spec"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -26,8 +26,7 @@
     "swagger-ui-express": "^4.1.2"
   },
   "devDependencies": {
-    "@types/bcrypt": "^3.0.0",
-    "@types/body-parser": "^1.17.0",
+    "@types/body-parser": "^1.17.1",
     "@types/cors": "^2.8.5",
     "@types/dotenv": "^6.1.1",
     "@types/errorhandler": "0.0.32",
