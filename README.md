@@ -28,3 +28,5 @@ To build the project:
 The api documentation: 
 
   go to the browser and run http://localhost:5000 
+
+After that server is up and running on 5000 port, than run public side https://github.com/SatanaCSharp/user.side.vacation 
