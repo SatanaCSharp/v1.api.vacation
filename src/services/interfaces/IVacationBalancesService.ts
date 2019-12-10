@@ -9,4 +9,5 @@ export interface IVacationBalancesService {
     updateBalanceUpdatedHiredDate(req: Request): Promise<IVacationBalanceModel | null>;
     updateBalanceUpdatedVacation(req: Request, currentVacation: IVacationModel): Promise<IVacationBalanceModel | null>;
     updateBalanceDeletedVacation(req: Request, currentVacation: IVacationModel): Promise<IVacationBalanceModel | null>;
+    updateBalanceMonthly(): Promise<IVacationBalanceModel[]>;
 }

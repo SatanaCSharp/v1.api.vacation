@@ -4,6 +4,9 @@ import { VacationBalance } from "../schemas/VacationBalance";
 import { IVacationBalancesRepository } from "./interfaces/IVacationBalancesRepository";
 
 export class VacationBalancesRepository implements IVacationBalancesRepository {
+    public  findAll = async (): Promise<IVacationBalanceModel[]> => {
+        return VacationBalance.find({}, "_id userId amount");
+    }
     public  findByUserId = async (userId: string): Promise<IVacationBalanceModel | null> => {
         return VacationBalance.findOne({userId}, "_id amount");
     }

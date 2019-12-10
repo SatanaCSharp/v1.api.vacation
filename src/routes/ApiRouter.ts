@@ -1,13 +1,16 @@
+import { IVacationBalancesController } from './../controllers/interfaces/IVacationBalancesController';
 import { Router } from "express";
+import cron from "node-cron";
 import swaggerUi from "swagger-ui-express";
+import { config } from "../config";
 import { RoutesMiddleware } from "../middlewares/RoutesMiddleware";
 import * as swaggerDocument from "../swagger.json";
+import { VacationBalancesController } from "./../controllers/VacationBalancesController";
 import { AbstractRouter } from "./AbstractRouter";
 import { authApi } from "./AuthRouter";
 import { IApiRouter } from "./interfaces/ApiRouter";
 import { userApi } from "./UserRouter";
 import { vacationApi } from "./VacationRouter";
-import { config } from "../config";
 export class ApiRouter extends AbstractRouter {
     constructor(public router: Router, private routes: IApiRouter[]) {
         super(router);
@@ -33,5 +36,10 @@ const apiRoutes: IApiRouter[] = [
     { url: "/users", router: userApi },
     { url: "/vacations", router: vacationApi },
     ];
+
+cron.schedule("0 0 0 1 1-12 *", () => {
+    const vacationBalancesController: IVacationBalancesController = new VacationBalancesController();
+    vacationBalancesController.updateBalanceMonthly();
+});
 
 export const apiRouter = new ApiRouter(Router(), apiRoutes);
