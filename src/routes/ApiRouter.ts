@@ -1,10 +1,10 @@
-import { IVacationBalancesController } from './../controllers/interfaces/IVacationBalancesController';
 import { Router } from "express";
 import cron from "node-cron";
 import swaggerUi from "swagger-ui-express";
 import { config } from "../config";
 import { RoutesMiddleware } from "../middlewares/RoutesMiddleware";
 import * as swaggerDocument from "../swagger.json";
+import { IVacationBalancesController } from "./../controllers/interfaces/IVacationBalancesController";
 import { VacationBalancesController } from "./../controllers/VacationBalancesController";
 import { AbstractRouter } from "./AbstractRouter";
 import { authApi } from "./AuthRouter";

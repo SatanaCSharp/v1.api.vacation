@@ -105,15 +105,15 @@ export class VacationCalculatorBalancesService implements IVacationCalculatorBal
     private getDaysDifference(startDate: Date, endDate: Date): number {
         const momentStartDate: Moment = moment(startDate);
         const momentEndDate: Moment = moment(endDate);
-        let daysCount: number = Math
+        let daysDifference: number = Math
         .round(momentStartDate.diff(momentEndDate, "days") - momentStartDate .diff(momentEndDate, "days") / 7 * 2);
         if (momentEndDate.day() === 6) {
-            daysCount--;
+            daysDifference--;
         }
         if (momentStartDate.day() === 7) {
-            daysCount--;
+            daysDifference--;
         }
-        return (daysCount * -1) + FIRS_DAY_OF_VACATION;
+        return (daysDifference * -1) + FIRS_DAY_OF_VACATION;
     }
     private getMonthsDifference(startDate: Date, endDate: Date): number {
         const momentStartDate: Moment = moment(startDate);
