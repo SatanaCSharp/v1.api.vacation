@@ -7,6 +7,7 @@ import {IVacationModel} from "../../schemas/interfaces/IVacationModel";
 export interface IVacationCalculatorBalancesService {
     getInitialBalance(useId: string): IVacationBalanceEntity;
     getBalanceStoredVacation(balance: IVacationBalanceModel, req: Request): IVacationBalanceEntity;
+    getBalanceUpdatedMonthly(userId: string, balance: IVacationBalanceModel): IVacationBalanceEntity;
     getBalanceUpdatedHiredDate(
         userId: string,
         balance: IVacationBalanceModel,

@@ -7,7 +7,7 @@ import {VacationBalanceMapper} from "../../mappers/VacationBalanceMapper";
 import { IVacationBalanceModel } from "../../schemas/interfaces/IVacationBalanceModel";
 import {IVacationModel} from "../../schemas/interfaces/IVacationModel";
 import { IVacationCalculatorBalancesService } from "../interfaces/IVacationCalculatorBalancesService";
-
+const FIRS_DAY_OF_VACATION = 1;
 
 export class VacationCalculatorBalancesService implements IVacationCalculatorBalancesService {
     public getInitialBalance(userId: string): IVacationBalanceEntity {
@@ -49,7 +49,11 @@ export class VacationCalculatorBalancesService implements IVacationCalculatorBal
         const balanceOptionsEntity = this.getBalanceOptions(req.params.userId, calculatedBalance);
         return this.getBalanceEntity(balanceOptionsEntity);
     }
-
+    public getBalanceUpdatedMonthly(userId: string, balance: IVacationBalanceModel): IVacationBalanceEntity {
+        const calculatedBalance: number = this.calculateMonthBalance(balance);
+        const balanceOptionsEntity = this.getBalanceOptions(userId, calculatedBalance);
+        return this.getBalanceEntity(balanceOptionsEntity);
+    }
     private getBalanceEntity(balanceOptionsEntity: IVacationBalanceOptionsEntity ): IVacationBalanceEntity {
         return new VacationBalanceMapper(new VacationBalanceEntity()).mapToEntity(balanceOptionsEntity);
     }
@@ -94,11 +98,22 @@ export class VacationCalculatorBalancesService implements IVacationCalculatorBal
         const daysDifference: number = this.getDaysDifference(startDate, endDate);
         return Math.round(balance.amount + daysDifference);
     }
+    private calculateMonthBalance(balance: IVacationBalanceModel): number {
+        return Math.round(balance.amount + 1.75);
+    }
 
     private getDaysDifference(startDate: Date, endDate: Date): number {
         const momentStartDate: Moment = moment(startDate);
         const momentEndDate: Moment = moment(endDate);
-        return moment.duration(momentEndDate.diff(momentStartDate)).asDays();
+        let daysDifference: number = Math
+        .round(momentStartDate.diff(momentEndDate, "days") - momentStartDate .diff(momentEndDate, "days") / 7 * 2);
+        if (momentEndDate.day() === 6) {
+            daysDifference--;
+        }
+        if (momentStartDate.day() === 7) {
+            daysDifference--;
+        }
+        return (daysDifference * -1) + FIRS_DAY_OF_VACATION;
     }
     private getMonthsDifference(startDate: Date, endDate: Date): number {
         const momentStartDate: Moment = moment(startDate);

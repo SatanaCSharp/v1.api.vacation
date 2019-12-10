@@ -81,6 +81,15 @@ export class VacationBalanceService implements IVacationBalancesService {
         }
         return null;
     }
+    public updateBalanceMonthly =  async (): Promise<IVacationBalanceModel[]> => {
+        const balances = await this.vacationBalancesRepository.findAll();
+        for (const balance of balances ) {
+            const vacationBalanceEntity: IVacationBalanceEntity = this.vacationCalculatorBalancesService
+            .getBalanceUpdatedMonthly(balance.userId, balance);
+            await this.update(balance.userId, vacationBalanceEntity);
+        }
+        return await  await this.vacationBalancesRepository.findAll();
+    }
     private  update = async (
         userId: string,
         vacationBalanceEntity: IVacationBalanceEntity,
